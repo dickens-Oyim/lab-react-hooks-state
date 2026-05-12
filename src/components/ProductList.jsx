@@ -1,21 +1,34 @@
 import React from 'react'
-import ProductCard from './ProductCard'
 
-// Sample product data (for display purposes only)
-export const sampleProducts = [
-  { id: 1, name: 'Apple', price: '$1.00', category: 'Fruits', inStock: true },
-  { id: 2, name: 'Milk', price: '$2.50', category: 'Dairy', inStock: false }
+const products = [
+  { id: 1, name: 'Apple',  category: 'Fruits', price: 1.2 },
+  { id: 2, name: 'Banana', category: 'Fruits', price: 0.5 },
+  { id: 3, name: 'Milk',   category: 'Dairy',  price: 2.5 },
+  { id: 4, name: 'Cheese', category: 'Dairy',  price: 3.0 },
+  { id: 5, name: 'Mango',  category: 'Fruits', price: 1.8 },
 ]
 
-const ProductList = () => {
-  return (
-    <div>
-      <h2>Available Products</h2>
+const ProductList = ({ selectedCategory, onAddToCart, cart }) => {
+  const filtered =
+    selectedCategory === 'all'
+      ? products
+      : products.filter((p) => p.category === selectedCategory)
 
-      {/* TODO: Filter sample data using selected category */}
-      {sampleProducts.map((product) => (
-        <ProductCard key={product.id} product={product} />
-      ))}
+  return (
+    <div className="product-list">
+      {filtered.map((product) => {
+        const inCart = cart.some((item) => item.id === product.id)
+        return (
+          <div key={product.id} className="product-card">
+            <h3>{product.name}</h3>
+            <p>Category: {product.category}</p>
+            <p>Price: ${product.price.toFixed(2)}</p>
+            <button onClick={() => onAddToCart(product)} disabled={inCart}>
+              {inCart ? 'Added' : 'Add to Cart'}
+            </button>
+          </div>
+        )
+      })}
     </div>
   )
 }
