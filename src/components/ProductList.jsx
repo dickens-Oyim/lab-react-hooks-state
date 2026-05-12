@@ -22,7 +22,7 @@ const ProductList = ({ selectedCategory, onAddToCart, cart = [] }) => {
         filtered.map((product) => {
           const inCart = cart.find((item) => item.id === product.id)
           return (
-            <div key={product.id} className="product-card">
+            <div key={product.id} className="product-card" data-testid={`product-${product.id}`}>
               <h3>{product.name}</h3>
               <p>Category: {product.category}</p>
               <p>Price: ${product.price.toFixed(2)}</p>
