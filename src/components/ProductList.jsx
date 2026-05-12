@@ -1,6 +1,6 @@
 import React from 'react'
 
-const products = [
+export const sampleProducts = [
   { id: 1, name: 'Apple',  category: 'Fruits', price: 1.2 },
   { id: 2, name: 'Banana', category: 'Fruits', price: 0.5 },
   { id: 3, name: 'Milk',   category: 'Dairy',  price: 2.5 },
@@ -8,27 +8,31 @@ const products = [
   { id: 5, name: 'Mango',  category: 'Fruits', price: 1.8 },
 ]
 
-const ProductList = ({ selectedCategory, onAddToCart, cart }) => {
+const ProductList = ({ selectedCategory, onAddToCart, cart = [] }) => {
   const filtered =
     selectedCategory === 'all'
-      ? products
-      : products.filter((p) => p.category === selectedCategory)
+      ? sampleProducts
+      : sampleProducts.filter((p) => p.category === selectedCategory)
 
   return (
     <div className="product-list">
-      {filtered.map((product) => {
-        const inCart = cart.some((item) => item.id === product.id)
-        return (
-          <div key={product.id} className="product-card">
-            <h3>{product.name}</h3>
-            <p>Category: {product.category}</p>
-            <p>Price: ${product.price.toFixed(2)}</p>
-            <button onClick={() => onAddToCart(product)} disabled={inCart}>
-              {inCart ? 'Added' : 'Add to Cart'}
-            </button>
-          </div>
-        )
-      })}
+      {filtered.length === 0 ? (
+        <p>No products available.</p>
+      ) : (
+        filtered.map((product) => {
+          const inCart = cart.find((item) => item.id === product.id)
+          return (
+            <div key={product.id} className="product-card">
+              <h3>{product.name}</h3>
+              <p>Category: {product.category}</p>
+              <p>Price: ${product.price.toFixed(2)}</p>
+              <button onClick={() => onAddToCart(product)} disabled={!!inCart}>
+                {inCart ? 'Added' : 'Add to Cart'}
+              </button>
+            </div>
+          )
+        })
+      )}
     </div>
   )
 }
